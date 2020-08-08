@@ -2,8 +2,8 @@ function Singlist(title,url){
     this.title=title;
     this.url=url;
 }
-
-fetch('/jsmusicplayer/music_html_list').then((response) => {
+var song_list_search=[];
+fetch('/music_html_list').then((response) => {
     return response.text();
 }).then((data) => {
 
@@ -17,5 +17,7 @@ fetch('/jsmusicplayer/music_html_list').then((response) => {
         list[i].innerHTML=gettitle(list[i].innerHTML,false);
         song_list.push(new Singlist(list[i].innerHTML,list[i].title));
     }
+    
+}).then(()=>{
     song_list_search=song_list;
-})
+});
