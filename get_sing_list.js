@@ -9,7 +9,7 @@ fetch('music_html_list').then((response) => {
 
     document.getElementById("list_in").innerHTML = song_all_list_html = data;
 }).then(() => {
-    var list = document.getElementById("list_in").childNodes;
+    var list = document.getElementById("list_in").children;
     for (var i = 0; i < list.length; i++) {
         list[i].addEventListener('click', (e)=>{
             push_singqueue(e.target);
@@ -19,6 +19,6 @@ fetch('music_html_list').then((response) => {
     }
     
 }).then(()=>{
-    console.log('길이',song_list.length);
+    console.log('길이',song_list.length); 
     song_list_search=song_list;
 });
