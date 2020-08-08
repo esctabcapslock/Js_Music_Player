@@ -19,5 +19,6 @@ fetch('music_html_list').then((response) => {
     }
     
 }).then(()=>{
+    console.log('길이',song_list.length);
     song_list_search=song_list;
 });
