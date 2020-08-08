@@ -34,8 +34,6 @@ function song_search() {
         song_list_search = song_list;
     }
 
-    song_list_search = [];
-
     document.getElementById("list_in").style.top = "0px";
 
     for (var i = 0; i < song_list.length; i++) {
