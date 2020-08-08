@@ -3,7 +3,7 @@ function Singlist(title,url){
     this.url=url;
 }
 
-fetch('/music_html_list').then((response) => {
+fetch('/jsmusicplayer/music_html_list').then((response) => {
     return response.text();
 }).then((data) => {
 
