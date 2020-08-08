@@ -9,14 +9,18 @@ module.exports.getlyrics = getlyrics;
 module.exports.getsongimg = getsongimg;
 
 function getsongimg(곡명,callback) {
-    
-    곡명 = 곡명.trim().replace(/-/g,"").replace(/.mp3/g,"").replace(/  /g," ");
-    var url = `https://www.melon.com/search/song/index.htm?q=${encodeURIComponent(곡명)}&section=&searchGnbYn=Y&kkoSpl=N&kkoDpType=&ipath=srch_form`
+    //console.log(곡명);
+    곡명 = 곡명.trim().replace(/-/g,"").replace(/.mp3/g,"").replace(/  /g," ").replace(/\s/g,'+');
+   //var url = `https://www.melon.com/search/song/index.htm?q=${encodeURIComponent(곡명)}&section=&searchGnbYn=Y&kkoSpl=N&kkoDpType=&ipath=srch_form` //전체검색
+    var url=`https://www.melon.com/search/lyric/index.htm?q=${encodeURIComponent(곡명)}&ipath=srch_form`//가사검색
+    //console.log('url',url)
     request(url).then((html)=>{
         var a = cheerio.load(html);
-        var b = a('#frm_defaultList tbody tr .ellipsis').eq(0);
+        //var b = a('#frm_defaultList tbody tr .ellipsis').eq(0);
+        var b = a('.section_lyric .list_lyric .cntt_lyric dt').eq(0);
+        
         //var c = b('.btn btn_icon_detail')
-
+        //console.log('b',b.html());
         var c=b.html();
         if (!c){
             console.log("곡을 찾을 수 없음");
@@ -24,7 +28,8 @@ function getsongimg(곡명,callback) {
             return "곡을 찾을 수 없음";
         }
         else{
-            var songurl = `https://www.melon.com/song/detail.htm?songId=${getisnum2(c)}`
+            var songurl = `https://www.melon.com/song/detail.htm?songId=${getisnum2_beta(c)}`
+            console.log('songurl',songurl);
         //console.log(songurl);
             request(songurl).then((shtml)=> {
                  var sa = cheerio.load(shtml);
@@ -35,7 +40,7 @@ function getsongimg(곡명,callback) {
                 var pl2 = sc_cut.indexOf(`"`);
                 var sc_cut_cut = sc_cut.substring(0,pl2);
                 
-            console.log(sc_cut_cut);
+            //console.log('sc_cut_cut',sc_cut_cut);
             //return 가사;
             
             callback(sc_cut_cut);
@@ -49,18 +54,16 @@ function getsongimg(곡명,callback) {
 function getlyrics(곡명,callback){
 
     //var 곡명="빅뱅 - 붉은노을";
-    곡명 = 곡명.trim().replace(/-/g,"").replace(/.mp3/g,"").replace(/  /g," ");
-    
-   // var url = `http://www.melon.com/search/keyword/index.json?jscallback=jQuery1910048840180302118785_1591423400600&query=${encodeURIComponent(곡명)}`;
-    //url = "http://www.naver.com/";
+    곡명 = 곡명.trim().replace(/-/g,"").replace(/.mp3/g,"").replace(/  /g," ").replace(/\s/g,'+');
+   //var url = `https://www.melon.com/search/song/index.htm?q=${encodeURIComponent(곡명)}&section=&searchGnbYn=Y&kkoSpl=N&kkoDpType=&ipath=srch_form` //전체검색
+    var url=`https://www.melon.com/search/lyric/index.htm?q=${encodeURIComponent(곡명)}&ipath=srch_form`//가사검색
 
-var url = `https://www.melon.com/search/song/index.htm?q=${encodeURIComponent(곡명)}&section=&searchGnbYn=Y&kkoSpl=N&kkoDpType=&ipath=srch_form`
-    //console.log("검색할곳",url);
 request(url).then((html)=>{
     
     var a = cheerio.load(html);
     
-    var b = a('#frm_defaultList tbody tr .ellipsis').eq(0);
+    //var b = a('#frm_defaultList tbody tr .ellipsis').eq(0);
+    var b = a('.section_lyric .list_lyric .cntt_lyric dt').eq(0);
     //var c = b('.btn btn_icon_detail')
     
     var c=b.html();
@@ -75,7 +78,7 @@ request(url).then((html)=>{
     //console.log(getisnum2(c));
     
     
-    var songurl = `https://www.melon.com/song/detail.htm?songId=${getisnum2(c)}`
+    var songurl = `https://www.melon.com/song/detail.htm?songId=${getisnum2_beta(c)}`
         //console.log(songurl);
         request(songurl).then((shtml)=> {
             var 가사 = getlylic(shtml);
@@ -126,6 +129,7 @@ request(url).then((html)=>{
 //node lyrics.js
                             
 //app.listen(포트);
+
 function getisnum2(html){
      //var html=`<button type="button" class="btn_icon play" title="&#xC7AC;&#xC0DD;" onclick="searchLog(&apos;web_song&apos;,&apos;SONG&apos;,&apos;SO&apos;,&apos;&#xC774;&#xBB38;&#xC138; &#xBD89;&#xC740;&#xB178;&#xC744;&apos;,&apos;612037&apos;);melon.play.playSong(&apos;26020103&apos;,612037);"><span class="odd_span">&#xC7AC;&#xC0DD;</span></button>  <button type="button" class="btn_icon add" title="&#xB2F4;&#xAE30;" onclick="searchLog(&apos;web_song&apos;,&apos;SONG&apos;,&apos;SO&apos;,&apos;&#xC774;&#xBB38;&#xC138; &#xBD89;&#xC740;&#xB178;&#xC744;&apos;,&apos;612037&apos;);melon.play.addPlayList(&apos;612037&apos;);"><span class="odd_span">&#xB2F4;&#xAE30;</span></button>  <a href="javascript:searchLog(&apos;web_song&apos;,&apos;SONG&apos;,&apos;SO&apos;,&apos;&#xC774;&#xBB38;&#xC138; &#xBD89;&#xC740;&#xB178;&#xC744;&apos;,&apos;612037&apos;);melon.link.goSongDetail(&apos;612037&apos;);" title="&#xACE1;&#xC815;&#xBCF4; &#xBCF4;&#xAE30;" class="btn btn_icon_detail"><span class="odd_span">&#xBD89;&#xC740; &#xB178;&#xC744; &#xC0C1;&#xC138;&#xC815;&#xBCF4; &#xD398;&#xC774;&#xC9C0; &#xC774;&#xB3D9;</span></a>  <span class="icon_song hot">HOT</span>  <a href="javascript:searchLog(&apos;web_song&apos;,&apos;SONG&apos;,&apos;SO&apos;,&apos;&#xC774;&#xBB38;&#xC138; &#xBD89;&#xC740;&#xB178;&#xC744;&apos;,&apos;612037&apos;);melon.play.playSong(&apos;26020103&apos;,612037);" class="fc_gray" title="&#xBD89;&#xC740; &#xB178;&#xC744;">&#xBD89;&#xC740; &#xB178;&#xC744;</a>`
         var pl=0;
@@ -169,6 +173,13 @@ for (k=pl1;')'!=html[k];k++);
     //console.log(html.substring(pl1,k));
     return html.substring(pl1,k).trim();
 
+}
+
+function getisnum2_beta(html){
+   var a=html.indexOf("link.goSongDetail(&apos;")
+   var b=html.substr(a+24,30);
+   var c=b.indexOf('&apos;)')
+   return b.substr(0,c);
 }
 
 function getsingnum(html){

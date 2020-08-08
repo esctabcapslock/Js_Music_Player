@@ -1,0 +1,40 @@
+#검색창 {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    height: 6%;
+    width: 100%;
+    padding-left: 3vh;
+    background-color: yellowgreen;
+    display: block;
+}
+
+#검색창>div {
+    position: relative;
+    display: inline-block;
+    height: 1.2em;
+    padding-left: 1vh;
+}
+
+#입력창 {
+    width: 300px;
+    padding: 2px;
+    padding-top: 5px;
+    border-bottom: 1px solid gray;
+    overflow: hidden;
+}
+
+#입력창:hover {border-bottom: 2px solid #151515;}
+
+#입력내용 {
+    width: 300px;
+    margin:0;
+    background-color: yellowgreen;
+    padding: 0;
+    border: 0 solid yellowgreen;
+}
+
+#검색버튼 {
+    top: 0;
+    margin: 0;
+}

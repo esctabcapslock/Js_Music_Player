@@ -28,6 +28,23 @@ function is_lyrics_url(xx){
     return 1;
 }
 
+function is_css_url(xx){
+    if (xx.indexOf(".css")!=xx.length-4) return 0;
+    xx=xx.substring(1,xx.length-4);
+    if (xx.includes('/')) return 0;
+     if (xx.includes('../')) return 0;
+    if (xx.includes('C%3A%2F')) return 0;
+    return 1;
+}
+function is_js_url(xx){
+    if (xx.indexOf(".js")!=xx.length-3) return 0;
+    xx=xx.substring(1,xx.length-3);
+    if (xx.includes('/')) return 0;
+     if (xx.includes('../')) return 0;
+    if (xx.includes('C%3A%2F')) return 0;
+    return 1;
+}
+
 function is_song_img(xx){
     if (xx.indexOf("/singimg/")!=0) return 0;
     xx=xx.substring(9,xx.length);
@@ -54,11 +71,27 @@ var app = http.createServer(function(요청, 응답){
     var _url = 요청.url;
     //console.log(_url);
     console.log(요청.headers.host, 요청.headers['user-agent'],decodeURIComponent(_url));
-    console.log();
     //0.
     if (_url=="/"){
         fs.readFile('index.html','utf-8',(E,파일)=>{
             var 확장자 = 'text/html; charset=utf-8'
+            응답.writeHead(200, {'Content-Type':확장자} );
+            응답.end(파일);
+        })
+    }
+    else if(is_css_url(_url)){
+        var cssurl=_url.substring(1,_url.length);
+        //console.log('css',cssurl);
+        fs.readFile(cssurl,'utf-8',(E,파일)=>{
+            var 확장자 = 'text/css; charset=utf-8'
+            응답.writeHead(200, {'Content-Type':확장자} );
+            응답.end(파일);
+        })
+    }else if(is_js_url(_url)){
+        var cssurl=_url.substring(1,_url.length);
+        //console.log('css',cssurl);
+        fs.readFile(cssurl,'utf-8',(E,파일)=>{
+            var 확장자 = 'text/js; charset=utf-8'
             응답.writeHead(200, {'Content-Type':확장자} );
             응답.end(파일);
         })
@@ -146,8 +179,6 @@ var app = http.createServer(function(요청, 응답){
 });
              
          },200);
-
-        
     }
     
     //2 mp3파일 전송
@@ -160,8 +191,9 @@ var app = http.createServer(function(요청, 응답){
         fs.readFile(music_name,(E,파일)=>{
             if (!E){
                 //console.log("오류안남");
-            응답.writeHead(200, {'Content-Type':확장자} );
+            응답.writeHead(200, {'Content-Type':확장자, 'Accept-Ranges': 'bytes', 'Content-Length': 파일.length.toString()} );
             응답.end(파일);
+                //console.log("파일길이",파일.length);//currentTime 설정
                 }
             else{
                 console.log("오류남");
@@ -175,16 +207,13 @@ var app = http.createServer(function(요청, 응답){
     else if (is_lyrics_url(_url)){
         var music_name=decodeURIComponent(_url.substring(8,_url.length));
         //console.log(music_name);
-        
         lyric.getlyrics(music_name,(가사)=>{
         var 확장자 = 'text/html; charset=utf-8';
         응답.writeHead(200, {'Content-Type':확장자} );
         //console.log("응답임",가사);
         응답.end(가사);
-        });
-        
+        });   
     }
-    
     //4 앨범 아트 주소 전송
     else if (is_song_img(_url)){
         var music_name=decodeURIComponent(_url.substring(9,_url.length));
@@ -196,8 +225,7 @@ var app = http.createServer(function(요청, 응답){
         //console.log("응답임",가사);
         응답.end(가사);
         });
-    }
-    
+    }    
     //5 래코드판
     else if (is_png(_url)){
         var png_name=decodeURIComponent(_url.substring(5,_url.length));
@@ -218,12 +246,6 @@ var app = http.createServer(function(요청, 응답){
     }
     
 });
-                            
-
 
 app.listen(port);
 console.log(`${port}번 포트에서 실행`)
-
-
-
-

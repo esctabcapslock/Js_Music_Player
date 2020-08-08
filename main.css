@@ -1,0 +1,66 @@
+body {
+    font-family: 맑은고딕, 맑은 고딕;
+    overflow: hidden;    
+    margin: 0;
+    padding: 0;
+}
+
+#list {
+    border: 1px dashed gray;
+    display: block;
+    /*overflow-y: scroll;*/
+    overflow:hidden;
+    position: absolute;
+    z-index: 0;
+}
+
+#list_in>div {
+    margin: 3px;
+    padding-left: 10px;
+    border-bottom: 1px solid #F9F9F9;
+    background-color: white;
+}
+
+#list_in>div:hover {
+    background-color: azure;
+}
+
+
+#가사 {
+     border: 1px dashed gray;
+    display: block;
+
+    overflow:hidden;
+    position: absolute;
+    z-index: 0;
+    /*padding: 10px;*/
+}
+#가사안{
+    position: relative;
+    width: 100%;
+
+    top:0;
+}
+
+#곡선택및정보 {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 79%;
+    top: 6%;
+}
+
+#재생 {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    height: 15%;
+    width: 100%;
+    background-color: #EAEAEA;
+    display: block;
+}
+
+#음악재생 {
+    width: 100%;
+    z-index: 20;
+}
