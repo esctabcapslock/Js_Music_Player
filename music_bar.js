@@ -101,6 +101,8 @@ document.body.addEventListener("keydown",(e)=>{
     }
 
     else if (!is입력중&&e.key=="Backspace"){
+        //console.log(e.key);
+        e.returnValue = false; //브라우저키 무효화
         var input = document.getElementById("입력내용");
         input.value=input.value.substring(0,input.value.length-1);
         song_search();

@@ -6,7 +6,7 @@ if (!(window.browser)){
     }
     else{스크롤바보이기()}
 
-    var 스크롤바보이냐 = false;
+    var 스크롤바보이냐 = true;
     function 스크롤바보이기(){
         if (!스크롤바보이냐){
         document.getElementById("list").style.overflow="scroll";

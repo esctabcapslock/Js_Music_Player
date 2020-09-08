@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width">
     <title>♪ 음악을 들어용</title>
     <link id = "표시된아이콘" rel="icon" href="/png/래코드판.png">
     <!--전체-->
@@ -27,6 +28,7 @@
     <div id="검색창">
 
         <div id="입력창"><input id="입력내용"> </div>
+        <span onclick="document.getElementById('입력내용').value='';song_search();"> × </span>
         <div id="검색버튼" onclick="song_search()">검색</div>
         <input type="checkbox" onclick="스크롤바보이기();">
     </div>
