@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width">
+    <title>♪ 음악을 들어용</title>
+    <link id = "표시된아이콘" rel="icon" href="/png/래코드판.png">
+    <!--전체-->
+    <link type="text/css" rel="stylesheet" href="main.css">
+    <!--큐-->
+    <link type="text/css" rel="stylesheet" href="queue.css">
+    <!--검색창-->
+    <link type="text/css" rel="stylesheet" href="search.css">
+    <!--반응형 조절-->
+    <link type="text/css" rel="stylesheet" href="reletive.css">
+    <!--음악 아래 재생바-->
+    <link type="text/css" rel="stylesheet" href="music_bar.css">
+    <!--볼륨-->
+    <link type="text/css" rel="stylesheet" href="volume.css">
+   
+      <!--큐-->
+    <script src="queue.js"></script>
+    <script src="playmusic.js"></script>
+</head>
+
+<body>
+<div if="wrap">
+    <div id="검색창">
+
+        <div id="입력창"><input id="입력내용" placeholder=''> </div>
+        <span onclick="document.getElementById('입력내용').value='';song_search();"> ✖ </span>
+        <div id="검색버튼" onclick="song_search()">검색</div>
+        <input id="sbar_show" type="checkbox"  style="display: none" onclick="스크롤바보이기();">
+        <label for="sbar_show">스크롤바</label>
+        <input id="name_show" style="display: none" type="checkbox" onclick="title_ch.play();">
+        <label for="name_show">곡명</label>
+        <span id="name_hidden" type="checkbox" onclick="title_ch.hidden();"> ⬚ </span>
+        <!--튕김표시-->
+        <script src="bounce.js"></script>
+    </div>
+    <!--곡의 검색-->
+    <script src="search.js"></script>
+    <!--검색시 하이라이트-->
+    <style>
+        #list_in > div>span{
+            background-color: yellow;
+        }
+        #list_in > div{
+            /*width: 100%;*/
+        }
+    </style>
+    <div id="곡선택및정보">
+        <div id="list">
+            <div id="list_in"></div>
+            
+        </div>
+
+        <div id="queue">
+            <div id="queuetitle">
+                <span onclick="singqueue_rand()">섞기</span>
+                <span onclick="singqueue_rand_add()">임의</span>
+                <span onclick="singqueue_result_add()">전체</span>
+                <span onclick="singqueue_all_del()">비우기</span>
+                <span onclick="singqueue_overlap_remove()">중복</span>
+                <span onclick="recommend(playing_music_name)">추천</span>
+                <span onclick="singqueue_replay()">이전</span>
+            </div>
+            <div id="queuelist" ><div class='설명'><br>&nbsp;&nbsp;<b>[기능설명]</b><br><br>곡 추가하기: 상단 검색 or 파일을 여기에 드래그<br>섞기: 섞음<br>임의: 검색 결과에서 임의의 한 곡을 추가<br>검색: 검색결과 전체 추가<br>비우기: 목록 비움<br>중복: 중복곡 제거<br>추천: 추천곡 추가<br>이전: 목록을  되돌림<br><br>검색: 대소문자 구분 ×, 초성검색 가능함<br>스크롤바: 스크롤바 표시하기<br>곡명: 곡명 숨기기</div></div>
+           
+            <script src="drag.js"></script>
+        </div>
+         <!--곡목록 받아오기-->
+        <script src="get_sing_list.js"></script>
+
+        <div id="가사">
+            <div id="가사안">가사가 보여야 함</div>
+        </div>
+        <!--곡의재생과 관련한 것들-->
+
+        <!--스크롤바 없에기-->
+        <script src="scrool.js"></script>
+    </div>
+    <div id="재생" value="재생바;">
+       <div id="상태바">
+                <div id="상태바안"></div>
+            </div>
+        <div id="가수이름">재생중인 노래가 없습니다</div>
+        <div id="재생바">
+            <div class="재생관련버튼" id="재생정지" onload="this_play();this_play();" onclick="this_play()">재생</div>
+            <div class="재생관련버튼" id="반복" onclick="this_loop()">반복X</div>
+            <div class="재생관련버튼" id="처음으로" onclick="playing_music.currentTime=0">첨</div>
+            <div class="재생관련버튼" id="끝으로" onclick="playmusic(),change_queue()">담</div>
+            <div class="재생관련버튼" id="상태시간" onclick="this_형식()"></div>
+            <div id="볼륨감싸기"> </div>
+            <div id="볼륨">
+                <div id="볼륨안"><div id="볼륨버튼"></div></div>
+            </div>
+            <div class="재생관련버튼" id="재생속도">
+               <div id="재생느리게" onclick="speadown()">-.1</div>
+               <div id="현재재생" onclick="spead1()"><span>1.0</span><span>배</span></div>
+               <div id="재생빠르게" onclick="speadup()">+.1</div>
+            </div>
+        </div>
+        <div id="이미지"></div>
+    </div>
+    <!--재생바에 관한 것들-->
+    <script src="music_bar.js"></script>
+    <!--볼륨-->
+    <script src="volume.js"></script>
+</div>
+</body>
+</html>
