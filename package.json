@@ -1,0 +1,29 @@
+{
+    "name": "playmusic",
+    "version": "1.0.0",
+    "description": "%username%\\music에 있는 음악 재생 및 분석",
+    "main": "main.js",
+    "author": {
+        "name": "ctrlfnalt",
+        "email": "ctrlfnalt@sasa.hs.kr"
+    },
+    "scripts": {
+        "start": "node main.js",
+        "build": "pkg main.js"
+    },
+    "pkg": {
+        "script": [
+            "main.js",
+            "lyrics.js"
+        ],
+        "assets": [
+            "index.html",
+            "lyrics.js"
+        ]
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.3",
+        "pkg": "^4.4.9",
+        "request-promise": "^4.2.6"
+    }
+}
