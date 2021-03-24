@@ -3,7 +3,13 @@ var url = require("url");
 const fs=require("fs");
 const port = 6868;
 var http = require("http");
-const lyric = require("./lyrics");
+const lyric = require("./moudules/lyrics");
+const homedir = require("os").userInfo().homedir
+
+//음악추천을 위함
+const exec = require('child_process').exec; 
+exec("start cmd /k \"%cd%\\recommend\\음악추천.exe\"", {encoding: 'utf-8'},(err,result,stderr) => {console.log('python server,', result)})
+exec(`Explorer http://127.0.0.1:6868`, {encoding: 'utf-8'},(err,result,stderr) => {})
 
 //const cheerio = require('cheerio');
 //const request = require('request-promise');
@@ -53,7 +59,7 @@ var app = http.createServer(function(요청, 응답){
     console.log(date, 요청.headers['user-agent'],decodeURIComponent(_url));
     //0.
     if (_url=="/"){
-        fs.readFile('index.html','utf-8',(E,파일)=>{
+        fs.readFile('assets/index.html','utf-8',(E,파일)=>{
             var 확장자 = 'text/html; charset=utf-8'
             응답.writeHead(200, {'Content-Type':확장자} );
             응답.end(파일);
@@ -62,13 +68,13 @@ var app = http.createServer(function(요청, 응답){
     else if(is_css_url(_url)){
         var cssurl=_url.substring(1,_url.length);
         //console.log('css',_url);
-        fs.readFile(cssurl,'utf-8',(E,파일)=>{
+        fs.readFile('assets/'+cssurl,'utf-8',(E,파일)=>{
             var 확장자 = 'text/css; charset=utf-8'
             응답.writeHead(200, {'Content-Type':확장자} );
             응답.end(파일);
         })
     }else if(is_js_url(_url)){
-        var cssurl=_url.substring(1,_url.length);
+        var cssurl='assets/'+_url.substring(1,_url.length);
         //console.log('css',cssurl);
         fs.readFile(cssurl,'utf-8',(E,파일)=>{
             var 확장자 = 'text/JavaScript; charset=utf-8';
@@ -111,7 +117,7 @@ var app = http.createServer(function(요청, 응답){
          
             promis_list.push(new Promise((resolve,reject)=>{
  
-        fs.readdir(`C:\\Users\\damit\\Music\\`,(E,파일목록)=>{
+        fs.readdir(homedir+`\\Music\\`,(E,파일목록)=>{
             //console.log(파일목록);
             for (var i=0; i<파일목록.length; i++){
                 if (파일목록[i].includes(".mp3")){
@@ -127,7 +133,7 @@ var app = http.createServer(function(요청, 응답){
                     
                     promis_list.push(new Promise((resolve,reject)=>{
                     var 볼볼파일 = 볼_파일;
-                    fs.readdir(`C:\\Users\\damit\\Music\\${볼볼파일}`,(E,파일목록내)=>{
+                    fs.readdir(homedir+`\\Music\\${볼볼파일}`,(E,파일목록내)=>{
                         for (var j=0; j<파일목록내.length; j++){
                             if (파일목록내[j].includes(".mp3")){
                              곡목록.push(파일목록내[j]);
@@ -172,8 +178,8 @@ var app = http.createServer(function(요청, 응답){
         //곡 로그 작성
         var log=`${date.toString()},"${music_name}"`+'\n';
         console.log('로그',log);
-        fs.appendFile("log.csv", log,(log)=>{});
-        fs.readFile(`C:\\Users\\damit\\Music\\`+music_name,(E,파일)=>{
+        fs.appendFile("assets/log.csv", log,(log)=>{});
+        fs.readFile(homedir+`\\Music\\`+music_name,(E,파일)=>{
             if (!E){
                 //console.log("오류안남");
             응답.writeHead(200, {'Content-Type':확장자, 'Accept-Ranges': 'bytes', 'Content-Length': 파일.length.toString()} );
@@ -216,7 +222,7 @@ var app = http.createServer(function(요청, 응답){
     else if (is_png(_url)){
         var png_name=decodeURIComponent(_url.substring(5,_url.length));
         //console.log("png_name",png_name);
-        fs.readFile(`${png_name}`,(E,파일)=>{
+        fs.readFile(`assets/${png_name}`,(E,파일)=>{
          var 확장자='image/png';
             //console.log("파일",파일);
             응답.writeHead(200, {'Content-Type':확장자} );
