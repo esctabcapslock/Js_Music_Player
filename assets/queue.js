@@ -3,30 +3,29 @@ var singqueue_top=0;
 var 큐전곡재생했슈 = false;
 
 function change_queue(){
-    var queueEle = document.getElementById("queuelist");
+    var quEle = document.getElementById("queuelist");
     var outhtml = "";
 
     new Promise((re,f)=>{
-        for (var i=(큐전곡재생했슈 ? singqueue_top    : singqueue_top>0 ? singqueue_top:0);singqueue[i];i++){
-        //console.log("i",i);
-        outhtml +=`<div class = 'queue_song'  id = "queue${i}" title = "${i}"> <span>×</span> <span >${singqueue[i].title}</span></div>`;
+        for (var i=(큐전곡재생했슈 ? singqueue_top : singqueue_top>0 ? singqueue_top:0);singqueue[i];i++){
+        outhtml +=`<div class = 'queue_song' id = "queue${i}" title = "${i}"> <span>×</span> <span>${singqueue[i].title}</span></div>`;
     }
-    //console.log(outhtml);
-    queueEle.innerHTML = outhtml;
+    quEle.innerHTML = outhtml;
     re();
     }).then(()=>{
-        //console.log(queueEle.childNodes.length);
-    for (var i=0;i<queueEle.childNodes.length;i++){
-
-        queueEle.childNodes[i].getElementsByTagName("span")[1].addEventListener("click",play_queue);
-        queueEle.childNodes[i].getElementsByTagName("span")[0].addEventListener("click",delete_queue);
+    for (var i=0;i<quEle.childNodes.length;i++){
+        quEle.childNodes[i].getElementsByTagName("span")[1].addEventListener("click",play_queue);
+        quEle.childNodes[i].getElementsByTagName("span")[0].addEventListener("click",delete_queue);
     }
     //큐 표류현상(?) 뒤로 밀려 안 보이는 현상 방지.
-    if (queuelist.parentElement.clientHeight < queuelist.clientHeight && Number( queuelist.style.top.replace('px','')) < queuelist.parentElement.clientHeight-queuelist.clientHeight)  queuelist.style.top = queuelist.parentElement.clientHeight-queuelist.clientHeight+'px';
-    if (queuelist.parentElement.clientHeight > queuelist.clientHeight ) queuelist.style.top='0px';
+    //가독성을 위해 각각의 clientHeight를 줄여 씀
+    var ph = quEle.parentElement.clientHeight, qh = quEle.clientHeight;
+    if (ph < qh && Number(quEle.style.top.replace('px','')) < ph-qh)  quEle.style.top = ph-qh+'px';
+    if (ph > qh ) quEle.style.top='0px';
     });
 }
 
+//해당 음악 요소(?)를 큐에서 삭제
 function delete_queue(e){
     var t = parseInt(e.target.parentElement.id.toString().replace("queue",""));
 
@@ -36,6 +35,8 @@ function delete_queue(e){
     singqueue.pop();
     change_queue();
 }
+
+//해당 음악 요소(?)를 재생
 function play_queue(e){
     var t = parseInt(e.target.parentElement.id.toString().replace("queue",""));
     singqueue_top = t;
@@ -50,7 +51,6 @@ function singqueue_rand (){
   for (var i=singqueue_top;i<singqueue.length;i++){
 
     var x = Math.floor( Math.random()*size ) + singqueue_top;
-    //console.log(i,x);
     var tmp = singqueue[i];
     singqueue[i] = singqueue[x];
     singqueue[x] = tmp;
@@ -59,7 +59,6 @@ function singqueue_rand (){
   for (var i=singqueue_top;i<singqueue.length;i++){
 
     var x = Math.floor( Math.random()*size ) + singqueue_top;
-    //console.log(i,x);
     var tmp = singqueue[i];
     singqueue[i] = singqueue[x];
     singqueue[x] = tmp;
@@ -119,7 +118,6 @@ function recommend(name){
     console.log(url)
     
     fetch(url).then((응답)=>{
-        //console.log(응답)
             if (응답.status==404){
                 console.log('실패')
                 alert('분석 실패: 분석 데이터가 부족합니다. 더 많은 노래를 들어주세요')

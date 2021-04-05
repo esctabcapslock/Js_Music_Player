@@ -1,5 +1,4 @@
 var 입력창 = document.getElementById("입력내용");
-var 검색버튼 = document.getElementById("검색버튼");
 //var song_list_search = []; //검색목록;
 입력창.focus()
 입력창.addEventListener("keyup", (e) => {
