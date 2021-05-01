@@ -5,7 +5,7 @@
     height: 6%;
     width: 100%;
     padding-left: 3vh;
-    background-color: yellowgreen;
+    background-color: #9ac1ff;//yellowgreen;
     display: block;
 }
 
@@ -29,9 +29,9 @@
 #입력내용 {
     width: 300px;
     margin:0;
-    background-color: yellowgreen;
+    background-color: #9ac1ff;//yellowgreen;
     padding: 0;
-    border: 0 solid yellowgreen;
+    border: 0 solid #9ac1ff;//yellowgreen;
 }
 
 #검색버튼 {
