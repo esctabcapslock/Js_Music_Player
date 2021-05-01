@@ -1,5 +1,6 @@
 var playing_music = new Audio;
-//var playing_music_name='';
+//현재 곡 추천을 위함
+var playing_music_name='';
 //var playing_div;
 var song_list=[];
 //var song_all_list_html;
@@ -12,7 +13,8 @@ function gettitle(x,괄호도제거해){
     else{if(!(c%2)) out+=str[i]}
     } return out} //괄호 제거
     
-    x= x.replace(/<span>/g,"").replace(/<\/span>/g,"").replace(/1집/g, '').replace(/2집/g, '').replace(/3집/g, '').replace(/4집/g, '').replace(/5집/g, '').replace(/6집/g, '').replace(/"01\."/g, '').replace(/02\./g, '').replace(/03\./g, '').replace(/04\./g, '').replace(/05\./g, '').replace(/06\./g, '').replace(/07\./g, '').replace(/08\./g, '').replace(/09\./g, '').replace(/10\./g, '').replace(/11\./g, '').replace(/12\./g, '').replace(/13\./g, '').replace(/14\./g, '').replace(/\s\s/g, ' ');
+    x= x.replace(/<span>/g,"").replace(/<\/span>/g,"").replace(/"01\."/g, '').replace(/02\./g, '').replace(/03\./g, '').replace(/04\./g, '').replace(/05\./g, '').replace(/06\./g, '').replace(/07\./g, '').replace(/08\./g, '').replace(/09\./g, '').replace(/10\./g, '').replace(/11\./g, '').replace(/12\./g, '').replace(/13\./g, '').replace(/14\./g, '').replace(/\s\s/g, ' ');
+    //replace(/1집/g, '').replace(/2집/g, '').replace(/3집/g, '').replace(/4집/g, '').replace(/5집/g, '').replace(/6집/g, '').
     //return 괄호도제거해 ? x.replace(/\(.*\)/gi, '').replace(/\[.*\]/gi, '') : x;
     return 괄호도제거해 ? 괄호(괄호(x,'()'),'[]') : x;
 }
@@ -35,7 +37,7 @@ function playmusic(e) {
         document.getElementById("이미지").style.backgroundImage=`url("png/래코드판.png")`;
         s_url = "";
         playing_music.src="";
-        //playing_music_name='';
+        playing_music_name='';
         playing_music.pause();
         큐전곡재생했슈 = true;
         return;
@@ -50,7 +52,7 @@ function playmusic(e) {
     else var url_name = s_url, mp3_get_url = '/music/' + encodeURIComponent(url_name).trim()+ ".mp3";
     //.replace(/<span>/g,"").replace(/<\/span>/g,"");
    
-    //playing_music_name=url_name;
+    playing_music_name=url_name;
     playing_music.src = mp3_get_url;
     playing_music.load();
     playing_music.play();
@@ -92,6 +94,7 @@ playing_music.onplaying=(e)=>{ // 시작할 때 이미지 바꾸기
 
 playing_music.onpause=(e)=>{ //멈추면, 이미지 바꾸기
     console.log('멈춤');
+    if(!playing_music.src) return;
     document.head.getElementsByTagName("link")[0].href = "/png/보류.png";
     document.getElementById("재생정지").innerHTML="재생";
 }
