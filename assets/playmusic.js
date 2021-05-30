@@ -13,10 +13,10 @@ function gettitle(x,괄호도제거해){
     else{if(!(c%2)) out+=str[i]}
     } return out} //괄호 제거
     
-    x= x.replace(/<span>/g,"").replace(/<\/span>/g,"").replace(/"01\."/g, '').replace(/02\./g, '').replace(/03\./g, '').replace(/04\./g, '').replace(/05\./g, '').replace(/06\./g, '').replace(/07\./g, '').replace(/08\./g, '').replace(/09\./g, '').replace(/10\./g, '').replace(/11\./g, '').replace(/12\./g, '').replace(/13\./g, '').replace(/14\./g, '').replace(/\s\s/g, ' ');
+    x= x.replace(/<span>/g,"").replace(/<\/span>/g,"").replace(/"01\."/g, '').replace(/02\./g, '').replace(/03\./g, '').replace(/04\./g, '').replace(/05\./g, '').replace(/06\./g, '').replace(/07\./g, '').replace(/08\./g, '').replace(/09\./g, '').replace(/10\./g, '').replace(/11\./g, '').replace(/12\./g, '').replace(/13\./g, '').replace(/14\./g, '').replace(/\s\s/g, ' ').replace(/  /g,'');
     //replace(/1집/g, '').replace(/2집/g, '').replace(/3집/g, '').replace(/4집/g, '').replace(/5집/g, '').replace(/6집/g, '').
     //return 괄호도제거해 ? x.replace(/\(.*\)/gi, '').replace(/\[.*\]/gi, '') : x;
-    return 괄호도제거해 ? 괄호(괄호(x,'()'),'[]') : x;
+    return 괄호도제거해 ? 괄호(괄호(x,'()'),'[]').replace(/  /g,'') : x;
 }
 
 function push_singqueue(x){
@@ -62,7 +62,7 @@ function playmusic(e) {
     document.getElementById("가수이름").innerHTML = document.head.getElementsByTagName("title")[0].innerHTML = 곡명;
 
     //가사 받아오기
-    var getlyric_URL = `/lyrics/${encodeURIComponent(곡명)}`;
+    var getlyric_URL = `/lyrics/${encodeURIComponent(s_url)}`;
     fetch(getlyric_URL).then((response) => {
         return response.text();
     }).then((data) => {
@@ -73,7 +73,7 @@ function playmusic(e) {
     document.getElementById("가사안").style.top="0px";
 
     //이미지 주소 받아오기
-    var singimg_URL = `/singimg/${encodeURIComponent(곡명)}`;
+    var singimg_URL = `/singimg/${encodeURIComponent(s_url)}`;
     fetch(singimg_URL).then((response) => {
         return response.text();
     }).then((data) => {
