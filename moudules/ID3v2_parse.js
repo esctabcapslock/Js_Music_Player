@@ -1,4 +1,3 @@
-fs = require('fs');
 module.exports.ID3v2_parse = ID3v2_parse;
 function ID3v2_parse(file, callback){ // 파일 버퍼, 콟백
     let info={
@@ -81,7 +80,7 @@ function ID3v2_parse(file, callback){ // 파일 버퍼, 콟백
         */
         p+=10;
 
-        //Text information frames인 경우
+        //Text information frames
         if(Frame_identifier[0]=='T'){
             let Text_encoding = file[p];
             if(Text_encoding==1){//유니코드
@@ -96,9 +95,9 @@ function ID3v2_parse(file, callback){ // 파일 버퍼, 콟백
             //console.log(text)
             if(text){
                 if (Frame_identifier=='TIT2') info.제목=text;
-                else if (Frame_identifier=='TPE2' || Frame_identifier=='TPE1') info.가수=text;
+                else if (Frame_identifier=='TPE2' || Frame_identifier=='TPE1') info.가수=text.split('/');
                 else if (Frame_identifier=='TALB') info.엘범=text;
-                else if (Frame_identifier=='TRCK') info.트렉 =Number(text);
+                else if (Frame_identifier=='TRCK') info.트렉 = Number(text);
                 else if (Frame_identifier=='TYER' || Frame_identifier=='TDRC') info.연도 = Number(text);
                 else if (Frame_identifier=='TCON') info.장르=text;
             }
@@ -128,7 +127,7 @@ function ID3v2_parse(file, callback){ // 파일 버퍼, 콟백
             let j = 0;
             for(;file[p+1+i+2+j]; j++);
             let Description = bf2chr(file,p+1+i+2, j);
-            let Picture_data = Buffer.alloc(Size-(p+1+i+2+j+1));
+            let Picture_data = Buffer.alloc(Size-(1+i+2+j+1));
             for (let k=0; k<Size-(1+i+2+j+1); k++) Picture_data[k]=file[p+1+i+2+j+1+k]
 
             info.엘범아트 = {

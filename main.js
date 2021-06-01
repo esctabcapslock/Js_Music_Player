@@ -12,7 +12,7 @@ const exec = require('child_process').exec;
 
 function is_this_URL(xx, dir, mime){
     function is_(xx){
-        if (xx.includes('/') || xx.includes('../') || xx.includes('C%3A%2F')) return 0;
+        if ( xx.includes('..') || xx.includes('%3A%2F') || ((xx.includes('/') || xx.includes('\\') || xx.includes('%5C') || xx.includes('%2F')) && (!xx.includes("'") && !xx.includes('%27')))) return 0;
         else return 1;
     }
     if (dir && xx.indexOf(dir)!=0) return 0;
@@ -111,7 +111,7 @@ var app = http.createServer(function(요청, 응답){
         
         //곡 로그 작성
         var log=`${date.toString()},"${music_name}"`;//+'\n';
-        console.log('로그',log);
+        //console.log('로그',log);
         fs.appendFile("assets/log.csv", log+'\n',(log)=>{});
         fs.readFile(homedir+`\\Music\\`+music_name,(E,파일)=>{
             if (!E){
@@ -133,9 +133,13 @@ var app = http.createServer(function(요청, 응답){
         
         fs.readFile(homedir+`\\Music\\`+music_url+'.mp3',(E,파일)=>{
             if (E){
-                console.log(E)
-                응답.writeHead(404, {'Content-Type':확장자} );
-                응답.end("404, 수상한 행동이 감지됨");
+                //console.error('err, 없는 파일!!')
+                lyric.getlyrics(music_name,(가사)=>{
+                var 확장자 = 'text/html; charset=utf-8';
+                if(가사=="곡을 찾을 수 없음")  응답.writeHead(500, {'Content-Type':확장자} );
+                else 응답.writeHead(200, {'Content-Type':확장자} );
+                응답.end(가사);
+                });
             }else{
                 ID3v2_parse(파일,(data)=>{
                     console.log('ID3v2_parse - get',data)
@@ -143,9 +147,9 @@ var app = http.createServer(function(요청, 응답){
                         응답.writeHead(200, {'Content-Type':'text/html; charset=utf-8'} );
                         응답.end(data.가사.replace(/\n/g,'<br>'));   
                     }else{ // 인터넷 검색
-                         lyric.getlyrics(music_name,(가사)=>{
+                        lyric.getlyrics(music_name,(가사)=>{
                         var 확장자 = 'text/html; charset=utf-8';
-                        if(가사=="인터넷 연결 안 됨")  응답.writeHead(500, {'Content-Type':확장자} );
+                        if(가사=="곡을 찾을 수 없음")  응답.writeHead(500, {'Content-Type':확장자} );
                         else 응답.writeHead(200, {'Content-Type':확장자} );
                         응답.end(가사);
                         });   
@@ -153,9 +157,6 @@ var app = http.createServer(function(요청, 응답){
                 })
             }
         });
-                
-        
-       
     }
     //4 앨범 아트 주소 전송
     else if (is_this_URL(_url,'/singimg/','')){
@@ -165,9 +166,13 @@ var app = http.createServer(function(요청, 응답){
         //console.log('reand',music_url);
         fs.readFile(homedir+`\\Music\\`+music_url+'.mp3',(E,파일)=>{
             if (E){
-                console.log(E)
-                응답.writeHead(404, {'Content-Type':'text/html; charset=utf-8'} );
-                응답.end("404, 수상한 행동이 감지됨");
+                //console.error('에러! 없는 파일')
+                lyric.getsongimg(music_name,(가사)=>{
+                var 확장자 = 'text/html; charset=utf-8';
+                if(가사=="png/래코드판.png")  응답.writeHead(500, {'Content-Type':확장자} );
+                else 응답.writeHead(200, {'Content-Type':확장자} );
+                응답.end(가사);
+                });
             }else{
                 ID3v2_parse(파일,(data)=>{
                     //console.log('ID3v2_parse - get',data)
